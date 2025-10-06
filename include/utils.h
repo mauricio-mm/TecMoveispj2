@@ -5,11 +5,11 @@
 
 #include <Arduino.h>
 
+#include "main.h"
 #include "FS.h"
 #include "SPIFFS.h"
 
 #include <Adafruit_Sensor.h>
-#include <ESP32Servo.h>
 #include <DHT.h>
 
 #define LEDPIN 2
@@ -19,7 +19,7 @@
 
 #define SERVOPIN 16
 
-void UtilsConfig(DHT *dht, Servo *servo);
+void UtilsConfig(DHT *dht);
 
 String le_umid(DHT *dht);
 String le_temp(DHT *dht);

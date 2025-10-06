@@ -7,6 +7,7 @@ void MQTTConnect(PubSubClient *MQTT)
 {
     MQTT->setServer(mqtt_broker, mqtt_port);   
     MQTT->setCallback(callback);
+
 }
 
 void MQTTConfig(PubSubClient *MQTT) 
@@ -15,14 +16,15 @@ void MQTTConfig(PubSubClient *MQTT)
     {
         if (MQTT->connect(ID_MQTT))
         {
-        Serial.println("Conectado ao Broker!");
-        MQTT->subscribe(topic_led);
-        MQTT->subscribe(topic_servo);      
+          Serial.println("Conectado ao Broker!");
+          MQTT->subscribe(topic_led);
+          MQTT->subscribe(topic_rele);
+          MQTT->subscribe(topic_servo);      
         } 
         else 
         {
-        Serial.print("Falha na conexão. O status é: ");
-        Serial.print(MQTT->state());      
+          Serial.print("Falha na conexão. O status é: ");
+          Serial.print(MQTT->state());      
         }
     }
 }
@@ -34,13 +36,51 @@ void publish_data(PubSubClient *MQTT,const char *topic, String data)
 
 void callback(char *topic, byte *payload, unsigned int length) 
 {
-  if(String(topic) == "lab318/led") 
-  {          
+  if(String(topic) == topic_led) 
+  {       
+    String msg = "";
+
+    for (unsigned int i = 0; i < length; i++) {
+        msg += (char)payload[i];
+    }
+
+    int sepIndex = msg.indexOf(':');
+    if (sepIndex > 0) {
+        String on_off = msg.substring(0, sepIndex);
+        int dimmer = msg.substring(sepIndex + 1).toInt();
+
+        if (on_off == "True" && dimmer > 0) {
+          analogWrite(LEDPIN, map(dimmer, 0, 4, 0, 255));
+        } else {
+          digitalWrite(LEDPIN, LOW);
+        }
+    } else {
+        Serial.println("Formato inválido de payload!");
+    }
+
   }
 
-  if(String(topic) == "lab318/servo") 
-  {    
+  if (String(topic) == topic_rele) 
+  { 
+      String msg = "";
 
+      for (unsigned int i = 0; i < length; i++) {
+          msg += (char)payload[i];
+      }    
+
+      msg.trim();
+      bool on_off = (msg == "True") ? true : false;
+      digitalWrite(LEDPIN, on_off ? HIGH : LOW);
+
+  }
+
+  if(String(topic) == topic_servo) 
+  {    
+      char msg[length + 1];
+      
+      memcpy(msg, payload, length);
+      msg[length] = '\0';      
+      servo.write(atoi(msg));      
   }
   
 }

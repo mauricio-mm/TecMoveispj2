@@ -1,7 +1,7 @@
 
 #include "utils.h"
 
-void UtilsConfig(DHT *dht, Servo *servo)
+void UtilsConfig(DHT *dht)
 {  
     //LED PIN 
     pinMode(LEDPIN, OUTPUT);
@@ -12,7 +12,7 @@ void UtilsConfig(DHT *dht, Servo *servo)
     pinMode(DHTPIN, INPUT);
 
     //SERVO CONF
-    servo->attach(SERVOPIN);
+    servo.attach(SERVOPIN);
 }
 
 String le_temp(DHT *dht)

@@ -6,11 +6,13 @@
 #include <PubSubClient.h>
 #include <DHT.h>
 
+#include "main.h"
 #include "WifiClient.h"
 #include "MQTTClient.h"
 #include "WebServerClient.h"
 #include "utils.h"
 
+Auth user;
 AsyncWebServer server(80);
 WiFiClient     espClient;
 PubSubClient   MQTT(espClient);
@@ -25,9 +27,9 @@ void setup()
     Serial.begin(9600);
     
     WIFIConnect(&espClient);
-    WEBServerConnect(&server);
+    WEBServerConnect(&server, &user);
     MQTTConnect(&MQTT);    
-    UtilsConfig(&dht, &servo);
+    UtilsConfig(&dht);
 } 
 
 void loop() 

@@ -2,14 +2,14 @@
 #define WEBSERVERCLIENT_H
 
 #include <Arduino.h>
-#include <WebServer.h>
 #include <ESPAsyncWebServer.h>
 
+#include "main.h"
 #include "FS.h"
 #include "SPIFFS.h"
 #include "utils.h"
 
-void WEBServerConnect(AsyncWebServer *server);
-void routes(AsyncWebServer& server) ;
+void WEBServerConnect(AsyncWebServer *server, Auth *user);
+void routes(AsyncWebServer *server, Auth *user);
 
 #endif
