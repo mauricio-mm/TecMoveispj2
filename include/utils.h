@@ -17,6 +17,8 @@
 #define DHTPIN 4
 #define DHTTYPE DHT22
 
+#define RELEPIN 3
+
 #define SERVOPIN 16
 
 void UtilsConfig(DHT *dht);

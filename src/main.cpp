@@ -42,6 +42,7 @@ void loop()
   if(millis()>pooling+5000)
   {
     pooling = millis();
+    Serial.println("DHT: " + String(dht.readTemperature()) + ':' +String(dht.readHumidity()));
     publish_data(&MQTT, topic_dht, String(dht.readTemperature()) + ':' +String(dht.readHumidity()));
   }  
 

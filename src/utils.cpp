@@ -11,6 +11,9 @@ void UtilsConfig(DHT *dht)
     dht->begin();
     pinMode(DHTPIN, INPUT);
 
+    //RELE CONF
+    pinMode(RELEPIN, OUTPUT);
+    
     //SERVO CONF
     servo.attach(SERVOPIN);
 }
