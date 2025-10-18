@@ -12,7 +12,6 @@
 #include "WebServerClient.h"
 #include "utils.h"
 
-Auth user;
 AsyncWebServer server(80);
 WiFiClient     espClient;
 PubSubClient   MQTT(espClient);
@@ -20,31 +19,57 @@ PubSubClient   MQTT(espClient);
 DHT            dht(DHTPIN, DHTTYPE);
 Servo          servo;
 
-static long long tempo=0;
+static long long pooling = 0;
+
+void listSPIFFS() {
+    File root = SPIFFS.open("/");
+    File file = root.openNextFile();
+    while (file) {
+        Serial.print("Arquivo encontrado: ");
+        Serial.println(file.name());
+        file = root.openNextFile();
+    }
+}
 
 void setup() 
 {  
     Serial.begin(9600);
     
-    WIFIConnect(&espClient);
-    WEBServerConnect(&server, &user);
+       if(!SPIFFS.begin(true)) {
+        Serial.println("Erro ao montar SPIFFS");
+        return;
+    }
+
+    listSPIFFS(); 
+
+    WIFIConnect();
+    WEBServerConnect(&server);
     MQTTConnect(&MQTT);    
     UtilsConfig(&dht);
 } 
 
 void loop() 
 {
-  static long long pooling = 0;
   
-  if(!MQTT.connected()) MQTTConfig(&MQTT);
-  if(WiFi.status() != WL_CONNECTED) WIFIConnect(&espClient);
-  
-  if(millis()>pooling+5000)
-  {
-    pooling = millis();
-    Serial.println("DHT: " + String(dht.readTemperature()) + ':' +String(dht.readHumidity()));
-    publish_data(&MQTT, topic_dht, String(dht.readTemperature()) + ':' +String(dht.readHumidity()));
-  }  
+  if(WiFi.status() == WL_CONNECTED)
+  { 
+    if(!MQTT.connected()) MQTTConfig(&MQTT);
 
-  MQTT.loop();
+    if(pooling > 100000)
+    {
+
+      Serial.println("DHT: " + String(dht.readTemperature()) + ':' + String(dht.readHumidity()));
+
+      if (!isnan(dht.readTemperature()) && !isnan(dht.readHumidity()))
+      {
+        publish_data(&MQTT, topic_dht, String(dht.readTemperature()) + ':' +String(dht.readHumidity()));
+      }
+
+      pooling = 0;
+    }else pooling++;
+
+    MQTT.loop(); 
+  }else WIFIConnect();  
+
+
 }

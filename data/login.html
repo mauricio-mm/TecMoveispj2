@@ -1,0 +1,30 @@
+<html>
+<head> 
+    <title>ESP32 Web Server</title> 
+    <link rel="stylesheet" type="text/css" href="styles.css">
+    <link rel="stylesheet" type="text/css" href="bootstrap.css">
+</head> 
+<body class="container">
+    <header class="text-center my-3">
+        <!-- Logo opcional -->
+    </header>
+
+    <div class="bg-light p-4 my-5 border border-secondary rounded shadow">
+
+        <h1 class="text-center mb-4">ESP32 Servidor Web</h1> 
+        <h2>Voce esta logado</h2> 
+
+        <form class="d-flex flex-column align-items-center gap-3" action="/set_config" method="post">
+            <div class="w-50 mx-auto mb-3">
+                <label for="newIP" class="form-label">Novo IP</label>
+                <input type="text" id="newIP" name="newIP" class="form-control" placeholder="Ex: 192.168.1.123">
+            </div>
+
+            <div class="text-center mt-4">
+                <button id="saveBtn" class="btn btn-secondary px-5">Alterar IP</button>
+            </div>
+        </form>
+
+    </div> 
+</body>
+</html>

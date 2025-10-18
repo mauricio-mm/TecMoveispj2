@@ -3,6 +3,7 @@
 
 #include <Arduino.h>
 #include <WiFi.h>
+#include "SPIFFS.h"
 
-void WIFIConnect(WiFiClient *espClient);
+void WIFIConnect();
 #endif

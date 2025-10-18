@@ -3,47 +3,48 @@
     <title>ESP32 Web Server</title> 
     <link rel="stylesheet" type="text/css" href="styles.css">
     <link rel="stylesheet" type="text/css" href="bootstrap.css">
-    <meta http-equiv="refresh" content="5">
+    <!-- <meta http-equiv="refresh" content="5"> -->
 </head> 
 <body class="container">
     <header class="text-center my-3">
-        <img src="../data/images/AlexiaDosPampas.png" alt="Logo" class="img-fluid" style="max-height:100px;">
+        <!-- <img src="../data/images/AlexiaDosPampas.png" alt="Logo" class="img-fluid" style="max-height:100px;"> -->
     </header>
 
     <div class="bg-light p-4 my-5 border border-secondary rounded shadow">
         <h1 class="text-center mb-4">ESP32 Servidor Web</h1> 
         
         <div id="message" class="text-center mb-3">
-            <!-- Mensagem de login será exibida aqui -->
+        </div>
+
+        <div id="message" class="text-center mb-3">
+            {{status}}
         </div>
 
         <form class="d-flex flex-column align-items-center gap-3" action="/login" method="post">
             <div class="w-50 mx-auto">
-                <label for="ssid" class="form-label">SSID</label>
-                <input id="ssid" name="ssid" type="text" class="form-control" placeholder="Digite o SSID">
+                <label for="login" class="form-label">Login</label>
+                <input id="login" name="login" type="text" class="form-control" placeholder="Digite o Login">
             </div>
 
             <div class="w-50 mx-auto">
                 <label for="password" class="form-label">Senha</label>
                 <input id="password" name="password" type="password" class="form-control" placeholder="Digite a senha">
-            </div>  
+            </div>
 
             <div class="text-center mt-4">
                 <button type="submit" class="btn btn-secondary px-5">Enviar</button>
             </div>
         </form>
     </div> 
- 
-    <script src="bootstrap.js"></script>
 
     <script>
-        const params = new URLSearchParams(window.location.search);
-        const status = params.get('status');
+        const messageDiv = document.getElementById('message');
+        const status = messageDiv.innerText;
 
         if(status === 'success') {
-            document.getElementById('message').innerHTML = '<span class="text-success">✅ Login bem-sucedido!</span>';
+            messageDiv.innerHTML = '<span class="text-success">✅ Login bem-sucedido!</span>';
         } else if(status === 'failure') {
-            document.getElementById('message').innerHTML = '<span class="text-danger">❌ Usuário ou senha inválidos.</span>';
+            messageDiv.innerHTML = '<span class="text-danger">❌ Usuário ou senha inválidos.</span>';
         }
     </script>
 </body>

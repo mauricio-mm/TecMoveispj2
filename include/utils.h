@@ -12,14 +12,14 @@
 #include <Adafruit_Sensor.h>
 #include <DHT.h>
 
-#define LEDPIN 2
+#define LEDPIN 4
 
-#define DHTPIN 4
+#define DHTPIN 16
 #define DHTTYPE DHT22
 
-#define RELEPIN 3
+#define RELEPIN 17
 
-#define SERVOPIN 16
+#define SERVOPIN 5
 
 void UtilsConfig(DHT *dht);
 
